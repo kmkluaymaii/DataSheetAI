@@ -22,9 +22,9 @@ def get_column_types(data):
     
 
 # Insert the data into the SQLite database
-def insert_data(data, db="database.db", table_name="table"):
+def insert_data(data, db_path, table_name="table"):
     
-    conn = sqlite3.connect(db)
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
     # Get column types
@@ -49,10 +49,11 @@ def insert_data(data, db="database.db", table_name="table"):
     conn.close()
     
 def main():
-    file_path = "data/spotify_data.csv"  
+    file_path = "data/spotify.csv"  
+    db_path = "data/spotify.db"
     data = load_data(file_path)
-    insert_data(data, db="music.db", table_name="sample_table")
-    print("Data loaded successfully!")
+    insert_data(data, db_path, table_name="spotify_data")
+    print(f"Data loaded successfully into {db_path}!")
 
 if __name__ == "__main__":
     main()
