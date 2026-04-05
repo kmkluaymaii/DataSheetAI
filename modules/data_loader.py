@@ -1,6 +1,5 @@
 import pandas as pd
 import sqlite3
-import os
 
 # Function to read the csv file
 def load_data(file_path):
@@ -48,12 +47,3 @@ def insert_data(data, db_path, table_name="table"):
     conn.commit()
     conn.close()
     
-def main():
-    file_path = "data/spotify.csv"  
-    db_path = "data/spotify.db"
-    data = load_data(file_path)
-    insert_data(data, db_path, table_name="spotify_data")
-    print(f"Data loaded successfully into {db_path}!")
-
-if __name__ == "__main__":
-    main()
