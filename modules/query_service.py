@@ -1,7 +1,7 @@
 import sqlite3
 import pandas as pd
 
-from data_loader import load_data
+from modules.data_loader import load_data
 from schema_manager import append_csv_to_table, get_existing_table, create_table, resolve_schema, infer_schema
 
 # List all tables in the database.
