@@ -50,7 +50,7 @@ class TestCSVSQLite(unittest.TestCase):
 
     # Test insert_data
     def test_insert_data(self):
-        insert_data(self.test_df, db=self.test_db, table_name=self.table_name)
+        insert_data(self.test_df, db_path=self.test_db, table_name=self.table_name)
 
         conn = sqlite3.connect(self.test_db)
         cursor = conn.cursor()
