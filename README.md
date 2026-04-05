@@ -75,24 +75,49 @@ python modules/cli_service.py "Give me top 5 songs by Taylor Swift" data/spotify
 #### Sample output:
 ```
 Data loaded successfully into data/music_movie.db!
-Existing table schema matches new data. Data will be appended.
-Schema matches. Skipping insert to avoid duplicates.
+Table 'spotify_table' created successfully.
 Schema Manager Done!
 Generating SQL...
 
-Generated SQL: SELECT id, track_name, track_artist, track_popularity FROM spotify_table WHERE track_artist = 'Taylor Swift' COLLATE NOCASE ORDER BY track_popularity DESC LIMIT 5;
+Generated SQL: SELECT track_name, track_artist, playlist_genre, track_popularity
+FROM spotify_table
+WHERE lower(track_artist) LIKE '%taylor swift%'
+ORDER BY track_popularity DESC, track_name ASC
+LIMIT 5;
 
-Explanation: Selects the top 5 tracks by Taylor Swift from spotify_table, ordered by track_popularity descending (highest popularity first).
-     id                       track_name  track_artist  track_popularity
-0   704                            Lover  Taylor Swift                84
-1   449  I Can Do It With a Broken Heart  Taylor Swift                83
-2  1257                         cardigan  Taylor Swift                83
-3   714                        Anti-Hero  Taylor Swift                81
-4   820                     Shake It Off  Taylor Swift                78
+Explanation: Selects the top 5 Taylor Swift tracks by descending track_popularity (case-insensitive match on track_artist) and returns their name, artist, genre, and popularity.
+
+                        track_name  ... track_popularity
+0    Fortnight (feat. Post Malone)  ...               84
+1                            Lover  ...               84
+2  I Can Do It With a Broken Heart  ...               83
+3                         cardigan  ...               83
+4                        Anti-Hero  ...               81
+
+[5 rows x 4 columns]
+
 Welcome to the SQLite Query Service!
 Commands: list tables | list columns | load <csv_file_path> | query | exit
-
->>> exit  
+>>> list tables
+Tables: ['spotify_table']
+>>> list columns
+Enter table name: spotify_table
+Columns in spotify_table: ['id', 'track_name', 'track_artist', 'playlist_genre', 'track_popularity']
+>>> load data/movie.csv
+Data loaded successfully into data/music_movie.db!
+Table 'movie_table' created successfully.
+>>> list tables
+Tables: ['spotify_table', 'movie_table']
+>>> list columns
+Enter table name: movie_table
+Columns in movie_table: ['id', 'name', 'genre', 'score', 'star']
+>>> query
+Enter SQL (or type 'back' to return): SELECT name, score FROM movie_table WHERE lower(star) LIKE '%emma stone%' ORDER by score DESC LIMIT 5
+                  name  score
+0             The Help    8.0
+1               Easy A    7.0
+2  Battle of the Sexes    6.7
+3             Movie 43    4.3
 ```
 This will:
 
