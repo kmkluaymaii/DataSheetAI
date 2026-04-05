@@ -4,6 +4,8 @@ import sys
 
 from data_loader import load_data, insert_data
 from schema_manager import append_csv_to_table, get_existing_table, create_table, resolve_schema, infer_schema
+from llm_interface import generate_sql
+from query_service import execute_sql, cli_loop
 
 if __name__ == "__main__":
     # Perform data_loader 
@@ -33,4 +35,31 @@ if __name__ == "__main__":
         print(f"Schema conflict detected for table '{table_name}'!")
 
     print(f"Schema Manager Done!")
+    
+    # Perform llm_interface
+    schema_dict = {table_name: get_existing_table(db_file_path, table_name)}
+
+    print("Generating SQL...")
+
+    sql, explanation = generate_sql(user_query, schema_dict)
+
+    # Ensure response is received before printing
+    if sql:
+        print(f"\nGenerated SQL: {sql}")
+    else:
+        print("\nNo SQL generated.")
+
+    if explanation:
+        print(f"\nExplanation: {explanation}")
+    else:
+        print("\nNo explanation provided.")
+        
+    # Perform query_service
+    df, err = execute_sql(db_file_path, sql)
+    if err:
+        print(err)
+    else:
+        print(df)
+    
+    cli_loop(db_file_path)
     

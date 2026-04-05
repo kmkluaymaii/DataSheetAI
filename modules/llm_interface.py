@@ -79,32 +79,3 @@ def generate_sql(user_query, schema_dict):
     prompt = build_prompt(user_query, schema_dict)
     response = call_llm(prompt)
     return response["sql"], response["explanation"]
-
-if __name__ == "__main__":
-    schema_dict = {
-        "spotify_data": {
-            "track_name": "TEXT",
-            "track_artist": "TEXT",
-            "playlist_genre": "TEXT",
-            "track_popularity": "INTEGER"
-        }
-    }
-
-    user_query = "What are the top 5 most popular songs by Taylor Swift?"
-
-    print("Generating SQL...")
-
-    sql, explanation = generate_sql(user_query, schema_dict)
-
-    # Ensure response is received before printing
-    if sql:
-        print("\n--- Generated SQL ---")
-        print(sql)
-    else:
-        print("\nNo SQL generated.")
-
-    if explanation:
-        print("\n--- Explanation ---")
-        print(explanation)
-    else:
-        print("\nNo explanation provided.")
